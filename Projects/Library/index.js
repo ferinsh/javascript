@@ -1,76 +1,53 @@
+document.addEventListener('DOMContentLoaded', function() {
+    const myLibrary = [];
 
-const myLibrary = []
+    function Book(title, author, pages, read) {
+        this.title = title;
+        this.author = author;
+        this.pages = pages;
+        this.read = read;
+    }
 
-function Book(isbn, title, author, read){
-    this.isbn = isbn
-    this.title = title
-    this.author = author
-    this.read = read
-}
+    function render() {
+        const libraryEl = document.querySelector('#library');
+        libraryEl.innerHTML = '';
+        myLibrary.forEach(book => {
+            const bookEl = document.createElement('div');
+            bookEl.classList.add('book');
+            bookEl.innerHTML = `
+                <div class="bookheader">
+                    <p>${book.title}</p>
+                    <span>${book.author}</span>
+                </div>
+                <div class="bookcard">
+                    <p>${book.pages} pages</p>
+                    <p>${book.read ? 'Read' : 'Not Read'}</p>
+                </div>
+            `;
+            libraryEl.appendChild(bookEl);
+        });
+    }
 
-function addBookToLibrary(){
-    // Accessing form elements
-    var isbnInput = document.getElementById('isbn');
-    var titleInput = document.getElementById('title');
-    var authorInput = document.getElementById('author');
-    var readInput = document.getElementById('read');
+    function addBookToLibrary() {
+        const title = document.querySelector('#title').value;
+        const author = document.querySelector('#author').value;
+        const pages = document.querySelector('#pages').value;
+        const read = document.querySelector('#read').checked;
+        const newBook = new Book(title, author, pages, read);
+        myLibrary.push(newBook);
+        console.log(myLibrary);
+        render();
+        document.querySelector('#new-book-form').reset();
+        document.querySelector('#new-book-form').style.display = 'none';
+    }
 
-    // Getting values from form elements
-    var isbn = isbnInput.value;
-    var title = titleInput.value;
-    var author = authorInput.value;
-    var read = readInput.value;
+    const newBookBtn = document.querySelector('#new-book-btn');
+    newBookBtn.addEventListener('click', () => {
+        document.querySelector('#new-book-form').style.display = 'flex';
+    });
 
-
-    myLibrary.push(new Book(isbn, title, author, read));
-}
-
-function addBookToTable(){
-    addBookToLibrary();
-    var i = myLibrary.length - 1;
-    
-    var table = document.getElementById("booklist");
-    var newRow = table.insertRow();
-    
-    var tableISBN = newRow.insertCell(0);
-    var tableTitle = newRow.insertCell(1);
-    var tableAuthor = newRow.insertCell(2);
-    var tableRead = newRow.insertCell(3);
-    
-    tableISBN.innerHTML = myLibrary[i].isbn;
-    tableTitle.innerHTML = myLibrary[i].title;
-    tableAuthor.innerHTML = myLibrary[i].author;
-    tableRead.innerHTML = myLibrary[i].read;
-
-
-    
-
-}
-
-var BTN_addBook = document.getElementById('add-book');
-var form = document.getElementById('form-new-book');
-var inputReadCheck = document.querySelectorAll('#readcheck');
-var table = document.getElementById("booklist");
-console.log(inputReadCheck)
-
-//BTN_addBook.addEventListener('click', /*CODE TO BE ADDED*/ );
-
-form.addEventListener('submit', function(event) {
-    event.preventDefault(); // Prevent the default form submission
-    addBookToTable();
-    form.reset(); // Reset the form after adding the book
-});
-
-inputReadCheck.forEach((checkbox) => {
-    checkbox.addEventListener('change', () => {
-        if(checkbox.checked){
-            checkbox.parentElement.innerHTML = 'Read <input id="readcheck" type="checkbox" checked>';
-        }
-        if(checkbox.checked == false){
-            checkbox.parentElement.innerHTML = 'Not Read <input id="readcheck" type="checkbox">';
-        }
-        
+    document.querySelector('#new-book-form').addEventListener('submit', (event) => {
+        event.preventDefault();
+        addBookToLibrary();
     });
 });
-
-
