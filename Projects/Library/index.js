@@ -8,10 +8,15 @@ document.addEventListener('DOMContentLoaded', function() {
         this.read = read;
     }
 
+    function deleteBook(index) {
+        myLibrary.splice(index, 1);
+        render();
+    }
+
     function render() {
         const libraryEl = document.querySelector('#library');
         libraryEl.innerHTML = '';
-        myLibrary.forEach(book => {
+        myLibrary.forEach((book, index) => {
             const bookEl = document.createElement('div');
             bookEl.classList.add('book');
             bookEl.innerHTML = `
@@ -22,6 +27,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 <div class="bookcard">
                     <p>${book.pages} pages</p>
                     <p>${book.read ? 'Read' : 'Not Read'}</p>
+                    <button class="delete-book-btn" onclick="deleteBook(${index})">Delete</button>
                 </div>
             `;
             libraryEl.appendChild(bookEl);
@@ -42,6 +48,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     const newBookBtn = document.querySelector('#new-book-btn');
+
     newBookBtn.addEventListener('click', () => {
         document.querySelector('#new-book-form').style.display = 'flex';
     });
@@ -50,4 +57,12 @@ document.addEventListener('DOMContentLoaded', function() {
         event.preventDefault();
         addBookToLibrary();
     });
+
+    document.querySelector('#library').addEventListener('click', (event) => {
+        if (event.target.classList.contains('delete-book-btn')) {
+            const index = event.target.dataset.index;
+            deleteBook(index);
+        }
+    });
+
 });

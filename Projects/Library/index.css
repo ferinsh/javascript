@@ -22,7 +22,7 @@
 }
 
 #submit {
-    width: 100%; /* Make the submit button full width */
+    width: 100%;
     background: teal;
     border: none;
     color: white;
@@ -48,4 +48,17 @@
     width: 200px;
     padding: 10px;
     margin: 10px;
+}
+
+.delete-book-btn {
+    width: 100%;
+    background: crimson;
+    border: none;
+    color: white;
+    padding: 5px;
+    cursor: pointer;
+}
+
+.delete-book-btn:hover {
+    background: darkred;
 }
